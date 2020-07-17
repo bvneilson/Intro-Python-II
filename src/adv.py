@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -49,3 +50,36 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+player = Player("Brennan", room['outside'])
+def get_user_input():
+    user_input = input("\nMenu\nn - north\ns - south\ne - east\nw - west\nq - quit\nPlease make a selection: ")
+    return user_input
+
+
+def move_rooms(input):
+    switch = {
+              'n': 'n_to',
+              's': 's_to',
+              'e': 'e_to',
+              'w': 'w_to'
+    }
+    return switch.get(input, "error")
+
+
+print(player.current_room.name)
+print(player.current_room.description)
+user_input = get_user_input()
+
+while user_input != "q":
+    proposed_move = getattr(player.current_room, move_rooms(user_input))
+    if (proposed_move != "No room"):
+        player.current_room = proposed_move
+        print(player.current_room.name)
+        print(player.current_room.description)
+    else:
+        print("\n*** Invalid move! Please make a different selection ***\n")
+        print(player.current_room.name)
+        print(player.current_room.description)
+    user_input = get_user_input()
+print('Thanks for playing! Goodbye!')
